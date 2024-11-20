@@ -3,11 +3,14 @@ services:
   backend:
     build:
       context: .
-      dockerfile: /backend-app/Dockerfile-backend
+      dockerfile: ./backend-app/Dockerfile-backend
     ports:
       - "8000:8000"
     volumes:
       - ./backend-app:/database_connect
+    depends_on:
+      - db
+      - minio
     environment:
       DATABASE_URL: postgresql://postgres:Plotar1404@db:5432/circular
       MINIO_URL: "http://minio:9000"
@@ -31,11 +34,13 @@ services:
   frontend:
     build:
       context: .
-      dockerfile: /frontend-app/Dockerfile-frontend
+      dockerfile: ./frontend-app/Dockerfile-frontend
     ports:
       - "3000:3000"
     volumes:
       - ./frontend-app:/app
+    depends_on:
+      - backend
     environment:
       - NEXT_PUBLIC_API_URL=http://backend:8000
     networks:
