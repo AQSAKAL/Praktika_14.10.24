@@ -1,0 +1,24 @@
+name: Deploy Transcription Project
+
+on:
+  push:
+    branches:
+      - main  # Trigger workflow on pushes to the main branch
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Navigate to the project folder and deploy with Docker Compose
+      - name: Deploy with Docker Compose
+        run: |
+          cd Transcription_Project
+          docker-compose down || true  # Stop any existing containers
+          docker-compose pull          # Pull updated images if specified
+          docker-compose build         # Build images
+          docker-compose up -d         # Start containers in detached mode
