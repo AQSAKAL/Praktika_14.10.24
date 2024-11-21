@@ -3,7 +3,7 @@ name: Deploy Transcription Project
 on:
   push:
     branches:
-      - main  # Trigger workflow on pushes to the main branch
+      - nextJS  # Trigger workflow on pushes to the main branch
 
 jobs:
   deploy:
